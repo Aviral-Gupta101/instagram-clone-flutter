@@ -10,3 +10,16 @@ pickImage(ImageSource souce) async {
   }
   print("No file slected");
 }
+
+void showSnackbar(String content, BuildContext context) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        content,
+        style: TextStyle(fontSize: 16),
+      ),
+      // backgroundColor: Colors.red[700],
+    ),
+  );
+}
