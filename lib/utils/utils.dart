@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 pickImage(ImageSource souce) async {
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _file = await _imagePicker.pickImage(source: souce);
+  final ImagePicker imagePicker = ImagePicker();
+  XFile? file = await imagePicker.pickImage(source: souce);
 
-  if (_file != null) {
-    return await _file.readAsBytes();
+  if (file != null) {
+    return await file.readAsBytes();
   }
   print("No file slected");
 }
@@ -17,7 +17,7 @@ void showSnackbar(String content, BuildContext context) {
     SnackBar(
       content: Text(
         content,
-        style: TextStyle(fontSize: 16),
+        style: const TextStyle(fontSize: 16),
       ),
       // backgroundColor: Colors.red[700],
     ),

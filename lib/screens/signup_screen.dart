@@ -126,7 +126,10 @@ class _SignupScreenState extends State<SignupScreen> {
           width: double.infinity,
           child: Column(
             children: [
-              Flexible(child: Container(), flex: 1),
+              Flexible(
+                flex: 1,
+                child: Container(),
+              ),
               logoToShow,
               avatarToShow,
               const SizedBox(
@@ -192,7 +195,10 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 12,
               ),
-              Flexible(child: Container(), flex: 1),
+              Flexible(
+                flex: 1,
+                child: Container(),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
