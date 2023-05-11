@@ -12,10 +12,10 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int _page = 0;
-  late PageController pageController = PageController();
+  final PageController _pageController = PageController();
 
   void navigationTapped(int page) {
-    pageController.jumpToPage(page);
+    _pageController.jumpToPage(page);
   }
 
   void onPageChanged(int page) {
@@ -26,7 +26,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -34,10 +34,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        controller: pageController,
+        controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: homeScreenItems,
         onPageChanged: onPageChanged,
+        children: homeScreenItems,
       ),
       bottomNavigationBar: CupertinoTabBar(
         currentIndex: _page,
