@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
@@ -19,6 +20,20 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int comment = 0;
+
+  void getCommentCount() async {
+    final val = await FirestoreMethods().commentsCount(widget.snap["postId"]);
+    setState(() {
+      comment = val;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCommentCount();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +72,27 @@ class _PostCardState extends State<PostCard> {
                 IconButton(
                   onPressed: () {
                     showDialog(
-                        context: context,
-                        builder: (builder) {
-                          return Dialog(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: ["delete"]
-                                  .map(
-                                    (e) => InkWell(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 16),
-                                        child: Text(e),
-                                      ),
+                      context: context,
+                      builder: (builder) {
+                        return Dialog(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: ["delete"]
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 16),
+                                      child: Text(e),
                                     ),
-                                  )
-                                  .toList(),
-                            ),
-                          );
-                        });
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(Icons.more_vert),
                 ),
@@ -153,8 +169,8 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => CommentScreen())),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => CommentScreen(widget.snap))),
                 icon: const Icon(
                   Icons.comment_outlined,
                 ),
@@ -215,9 +231,9 @@ class _PostCardState extends State<PostCard> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     width: double.infinity,
-                    child: const Text(
-                      "View all 200 comments",
-                      style: TextStyle(
+                    child: Text(
+                      "View all $comment comments",
+                      style: const TextStyle(
                         fontSize: 16,
                         color: secondaryColor,
                       ),

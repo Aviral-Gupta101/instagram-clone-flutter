@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key});
+  final snap;
+  const CommentCard(this.snap, {super.key});
 
   @override
   State<CommentCard> createState() => _CommentCardState();
@@ -16,7 +18,7 @@ class _CommentCardState extends State<CommentCard> {
         children: [
           CircleAvatar(
             backgroundImage: NetworkImage(
-              "https://plus.unsplash.com/premium_photo-1666183669448-e41821d3ba2e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+              widget.snap["profilePic"],
             ),
             radius: 18,
           ),
@@ -31,11 +33,11 @@ class _CommentCardState extends State<CommentCard> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "username",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          text: widget.snap["name"],
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: "Some random description...",
+                          text: "  ${widget.snap["text"]}",
                         )
                       ],
                     ),
@@ -43,22 +45,26 @@ class _CommentCardState extends State<CommentCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      "3/12/23",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                      DateFormat.yMMMd()
+                          .format(widget.snap["datePublished"].toDate()),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 16),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: const Icon(
-              Icons.favorite,
-              size: 16,
-            ),
-          ),
+
+          // To be implemented yourself
+
+          // Container(
+          //   padding: const EdgeInsets.all(8),
+          //   child: const Icon(
+          //     Icons.favorite,
+          //     size: 16,
+          //   ),
+          // ),
         ],
       ),
     );

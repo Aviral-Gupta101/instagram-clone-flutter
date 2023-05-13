@@ -58,4 +58,46 @@ class FirestoreMethods {
       print(e.toString());
     }
   }
+
+  Future<String> postComment(String postId, String text, String uid,
+      String username, String profilePic) async {
+    String res = "some error occurred";
+    try {
+      if (text.trim().isEmpty) return "no input";
+      String commentId = const Uuid().v1();
+      DocumentReference ref = _firestore
+          .collection("posts")
+          .doc(postId)
+          .collection("comments")
+          .doc(commentId);
+      await ref.set({
+        "name": username,
+        "text": text,
+        "profilePic": profilePic,
+        "uid": uid,
+        "commentId": commentId,
+        "datePublished": DateTime.now(),
+      });
+      res = "success";
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+  Future<int> commentsCount(String postId) async {
+    int count = -1;
+
+    try {
+      CollectionReference ref =
+          _firestore.collection("posts").doc(postId).collection("comments");
+
+      await ref.get().then((QuerySnapshot querySnapshot) {
+        count = querySnapshot.docs.length;
+      });
+    } catch (e) {
+      print(e);
+    }
+    return count;
+  }
 }
