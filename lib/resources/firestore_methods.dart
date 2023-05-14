@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:instagram_clone/models/post.dart';
@@ -99,5 +101,16 @@ class FirestoreMethods {
       print(e);
     }
     return count;
+  }
+
+  Future<String> deletePost(String postId) async {
+    String res = "some error occured";
+    try {
+      await _firestore.collection("posts").doc(postId).delete();
+      res = "success";
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 }

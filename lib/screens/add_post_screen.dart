@@ -34,7 +34,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }) async {
     setState(() {
       _isLoading = true;
-      print("loading : $_isLoading");
     });
     try {
       String res = await FirestoreMethods().uploadPost(
@@ -157,7 +156,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 body: Column(
                   children: [
                     _isLoading ? const LinearProgressIndicator() : Container(),
-                    Divider(),
+                    const Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
