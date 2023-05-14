@@ -100,6 +100,4 @@ class FirestoreMethods {
     }
     return count;
   }
-
-  Future<void> deletePost(String postId) async {}
 }

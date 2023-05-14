@@ -113,83 +113,90 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
-    return _file == null
-        ? Center(
-            child: IconButton(
-              icon: const Icon(Icons.upload),
-              onPressed: _selectImage,
+    User? user = Provider.of<UserProvider>(context).getUser;
+
+    return user == null
+        ? const Center(
+            child: CircularProgressIndicator(
+              color: primaryColor,
             ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mobileBackgroundColor,
-              title: const Text("Post to"),
-              leading: IconButton(
-                onPressed: clearImage,
-                icon: const Icon(Icons.arrow_back),
-              ),
-              centerTitle: false,
-              actions: [
-                TextButton(
-                  onPressed: () => postImage(
-                      uid: user.uid,
-                      username: user.username,
-                      profileImage: user.photoUrl),
-                  child: const Text(
-                    "Post",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+        : _file == null
+            ? Center(
+                child: IconButton(
+                  icon: const Icon(Icons.upload),
+                  onPressed: _selectImage,
                 ),
-              ],
-            ),
-            body: Column(
-              children: [
-                _isLoading ? const LinearProgressIndicator() : Container(),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(user.photoUrl),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          hintText: "Write a caption...",
-                          border: InputBorder.none,
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  backgroundColor: mobileBackgroundColor,
+                  title: const Text("Post to"),
+                  leading: IconButton(
+                    onPressed: clearImage,
+                    icon: const Icon(Icons.arrow_back),
+                  ),
+                  centerTitle: false,
+                  actions: [
+                    TextButton(
+                      onPressed: () => postImage(
+                          uid: user.uid,
+                          username: user.username,
+                          profileImage: user.photoUrl),
+                      child: const Text(
+                        "Post",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold,
                         ),
-                        maxLines: 8,
                       ),
                     ),
-                    SizedBox(
-                      width: 45,
-                      height: 45,
-                      child: AspectRatio(
-                        aspectRatio: 487 / 451,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: MemoryImage(_file!),
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.topCenter,
+                  ],
+                ),
+                body: Column(
+                  children: [
+                    _isLoading ? const LinearProgressIndicator() : Container(),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(user.photoUrl),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          child: TextField(
+                            controller: _descriptionController,
+                            decoration: const InputDecoration(
+                              hintText: "Write a caption...",
+                              border: InputBorder.none,
+                            ),
+                            maxLines: 8,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 45,
+                          height: 45,
+                          child: AspectRatio(
+                            aspectRatio: 487 / 451,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: MemoryImage(_file!),
+                                  fit: BoxFit.fill,
+                                  alignment: FractionalOffset.topCenter,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        const Divider(),
+                      ],
                     ),
-                    const Divider(),
                   ],
-                )
-              ],
-            ),
-          );
+                ),
+              );
   }
 }

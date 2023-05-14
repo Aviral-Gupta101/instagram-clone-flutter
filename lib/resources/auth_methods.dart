@@ -15,13 +15,14 @@ class AuthMethods {
         await _firestore.collection("users").doc(currentUser.uid).get();
     final Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
     return model.User(
-        uid: data["uid"],
-        username: data["username"],
-        email: data["email"],
-        bio: data["bio"],
-        photoUrl: data["photoUrl"],
-        followers: data["followers"],
-        following: data["following"]);
+      uid: data["uid"],
+      username: data["username"],
+      email: data["email"],
+      bio: data["bio"],
+      photoUrl: data["photoUrl"],
+      followers: data["followers"],
+      following: data["following"],
+    );
   }
 
   // sign up user
