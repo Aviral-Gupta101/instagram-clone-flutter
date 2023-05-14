@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:instagram_clone/utils/colors.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -31,9 +32,11 @@ class _SearchScreenState extends State<SearchScreen> {
             labelText: "Search for a user",
           ),
           onFieldSubmitted: (String _) {
-            setState(() {
-              isShowUser = true;
-            });
+            if (_.length >= 2) {
+              setState(() {
+                isShowUser = true;
+              });
+            }
           },
         ),
       ),
@@ -45,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       isGreaterThanOrEqualTo: _searchController.text.trim())
                   .get(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator(
                     color: primaryColor,
                   );
@@ -68,7 +71,29 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               },
             )
-          : const Text("Posts"),
+          : FutureBuilder(
+              future: FirebaseFirestore.instance.collection("posts").get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return StaggeredGridView.countBuilder(
+                  crossAxisCount: 3,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) =>
+                      Image.network(snapshot.data!.docs[index]["postUrl"]),
+                  staggeredTileBuilder: (index) => StaggeredTile.count(
+                    (index % 7 == 0 ? 2 : 1),
+                    (index % 7 == 0 ? 2 : 1),
+                  ),
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                );
+              },
+            ),
     );
   }
 }
