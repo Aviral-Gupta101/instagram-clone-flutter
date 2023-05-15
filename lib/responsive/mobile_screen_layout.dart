@@ -45,7 +45,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         inactiveColor: secondaryColor,
         backgroundColor: mobileBackgroundColor,
         onTap: navigationTapped,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,

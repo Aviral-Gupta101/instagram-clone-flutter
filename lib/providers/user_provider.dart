@@ -12,4 +12,9 @@ class UserProvider with ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+
+  void removeUser() {
+    _user = null;
+    notifyListeners();
+  }
 }

@@ -113,4 +113,32 @@ class FirestoreMethods {
     }
     return res;
   }
+
+  // Follow and Unfollow
+  Future<void> toogleFollow(String userUid, String guestUid) async {
+    try {
+      DocumentReference userRef = _firestore.collection("users").doc(userUid);
+      DocumentReference guestRef = _firestore.collection("users").doc(guestUid);
+      DocumentSnapshot userSnap = await userRef.get();
+
+      if ((userSnap.data() as Map<String, dynamic>)["following"]
+          .contains(guestUid)) {
+        userRef.update({
+          "following": FieldValue.arrayRemove([guestUid]),
+        });
+        guestRef.update({
+          "followers": FieldValue.arrayRemove([userUid]),
+        });
+      } else {
+        userRef.update({
+          "following": FieldValue.arrayUnion([guestUid]),
+        });
+        guestRef.update({
+          "followers": FieldValue.arrayUnion([userUid]),
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }

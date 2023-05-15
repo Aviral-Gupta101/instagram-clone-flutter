@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
         title: TextFormField(
           controller: _searchController,
           decoration: const InputDecoration(
-            labelText: "Search for a user",
+            labelText: "Search for a user...",
           ),
           onFieldSubmitted: (String _) {
             if (_.length >= 2) {
@@ -65,8 +66,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           backgroundImage: NetworkImage(snapData["photoUrl"]),
                         ),
                         title: Text(snapData["username"]),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => ProfileScreen(uid: snapData["uid"]),
+                          ),
+                        ),
                       );
                     }
+
+                    return const Center(
+                      child: Text("error in search_screen"),
+                    );
                   },
                 );
               },

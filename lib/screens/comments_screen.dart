@@ -9,7 +9,7 @@ import 'package:instagram_clone/widgets/comment_card.dart';
 import 'package:provider/provider.dart';
 
 class CommentScreen extends StatefulWidget {
-  final snap;
+  final dynamic snap;
   const CommentScreen(this.snap, {super.key});
 
   @override

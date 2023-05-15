@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,6 +36,12 @@ class FeedScreen extends StatelessWidget {
               child: CircularProgressIndicator(
                 color: primaryColor,
               ),
+            );
+          }
+          // If no posts
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text("Please add a post"),
             );
           }
           return ListView.builder(

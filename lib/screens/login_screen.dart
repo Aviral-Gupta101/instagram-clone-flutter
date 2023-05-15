@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
@@ -66,7 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
           width: double.infinity,
           child: Column(
             children: [
-              Flexible(child: Container(), flex: 1),
+              Flexible(
+                flex: 1,
+                child: Container(),
+              ),
               // instagram image
               SvgPicture.asset(
                 "assets/ic_instagram.svg",
@@ -121,7 +126,10 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 12,
               ),
-              Flexible(child: Container(), flex: 1),
+              Flexible(
+                flex: 1,
+                child: Container(),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
