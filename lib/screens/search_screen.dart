@@ -68,7 +68,10 @@ class _SearchScreenState extends State<SearchScreen> {
                         title: Text(snapData["username"]),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => ProfileScreen(uid: snapData["uid"]),
+                            builder: (_) => ProfileScreen(
+                              uid: snapData["uid"],
+                              currentUser: false,
+                            ),
                           ),
                         ),
                       );

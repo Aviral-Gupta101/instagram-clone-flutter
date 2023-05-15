@@ -12,7 +12,9 @@ import '../widgets/follow_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
-  const ProfileScreen({required this.uid, super.key});
+  final bool currentUser;
+  const ProfileScreen(
+      {required this.uid, required this.currentUser, super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -28,13 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> getUserData() async {
     try {
+      final uid = widget.currentUser ? currentUid : widget.uid;
       FirebaseFirestore ref = FirebaseFirestore.instance;
-      DocumentSnapshot userSnap =
-          await ref.collection("users").doc(widget.uid).get();
-      QuerySnapshot postSnap = await ref
-          .collection("posts")
-          .where("uid", isEqualTo: widget.uid)
-          .get();
+      DocumentSnapshot userSnap = await ref.collection("users").doc(uid).get();
+      QuerySnapshot postSnap =
+          await ref.collection("posts").where("uid", isEqualTo: uid).get();
 
       setState(() {
         userData = userSnap.data() as Map<String, dynamic>;
@@ -58,8 +58,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Original user : ${FirebaseAuth.instance.currentUser!.uid} ");
-    print("Given user : ${widget.uid}");
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(

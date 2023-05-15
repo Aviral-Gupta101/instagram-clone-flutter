@@ -14,7 +14,5 @@ var homeScreenItems = [
   const Center(
     child: Text("favortie"),
   ),
-  ProfileScreen(
-    uid: FirebaseAuth.instance.currentUser!.uid,
-  ),
+  ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid, currentUser: true),
 ];
