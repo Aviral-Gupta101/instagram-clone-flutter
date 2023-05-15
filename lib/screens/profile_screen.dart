@@ -23,6 +23,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   var currentUid = FirebaseAuth.instance.currentUser!.uid;
   bool isLoading = true;
+  late final uid;
   var userData = {};
   bool isFollowing = false;
   int follower = 0;
@@ -30,7 +31,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> getUserData() async {
     try {
-      final uid = widget.currentUser ? currentUid : widget.uid;
+      setState(() {
+        uid = widget.currentUser ? currentUid : widget.uid;
+      });
       FirebaseFirestore ref = FirebaseFirestore.instance;
       DocumentSnapshot userSnap = await ref.collection("users").doc(uid).get();
       QuerySnapshot postSnap =
@@ -113,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      currentUid == widget.uid
+                                      currentUid == uid
                                           ? FollowButton(
                                               backgroundColor:
                                                   mobileBackgroundColor,
@@ -204,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection("posts")
-                        .where("uid", isEqualTo: widget.uid)
+                        .where("uid", isEqualTo: uid)
                         .get(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
