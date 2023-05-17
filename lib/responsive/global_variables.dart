@@ -8,9 +8,10 @@ import 'package:instagram_clone/screens/search_screen.dart';
 const webScreenSize = 600;
 
 var homeScreenItems = [
+  const FavoratieScreen(),
   const FeedScreen(),
   const SearchScreen(),
   const AddPostScreen(),
-  const FavoratieScreen(),
+  // const FavoratieScreen(),
   ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid, currentUser: true),
 ];

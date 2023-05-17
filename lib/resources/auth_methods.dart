@@ -15,14 +15,14 @@ class AuthMethods {
         await _firestore.collection("users").doc(currentUser.uid).get();
     final Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
     return model.User(
-      uid: data["uid"],
-      username: data["username"],
-      email: data["email"],
-      bio: data["bio"],
-      photoUrl: data["photoUrl"],
-      followers: data["followers"],
-      following: data["following"],
-    );
+        uid: data["uid"],
+        username: data["username"],
+        email: data["email"],
+        bio: data["bio"],
+        photoUrl: data["photoUrl"],
+        followers: data["followers"],
+        following: data["following"],
+        favorites: data["favorites"]);
   }
 
   // sign up user
@@ -48,14 +48,14 @@ class AuthMethods {
             .uploadImageToStorage("profilePics", file, false);
 
         model.User userObj = model.User(
-          uid: cred.user!.uid,
-          username: username,
-          email: email,
-          bio: bio,
-          photoUrl: photoUrl,
-          followers: [],
-          following: [],
-        );
+            uid: cred.user!.uid,
+            username: username,
+            email: email,
+            bio: bio,
+            photoUrl: photoUrl,
+            followers: [],
+            following: [],
+            favorites: []);
 
         // add user to database
         await _firestore
