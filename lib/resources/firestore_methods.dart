@@ -141,4 +141,25 @@ class FirestoreMethods {
       print(e);
     }
   }
+
+  // Add or Remove user to favoraite
+  Future<void> toogleFavorites(String userUid, String guestUid) async {
+    try {
+      DocumentReference userRef = _firestore.collection("users").doc(userUid);
+      DocumentSnapshot userSnap = await userRef.get();
+
+      if ((userSnap.data() as Map<String, dynamic>)["favorites"]
+          .contains(guestUid)) {
+        await userRef.update({
+          "favorites": FieldValue.arrayRemove([guestUid]),
+        });
+      } else {
+        await userRef.update({
+          "favorites": FieldValue.arrayUnion([guestUid]),
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
