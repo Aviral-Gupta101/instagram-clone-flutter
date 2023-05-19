@@ -1,16 +1,55 @@
-# instagram_clone
 
-A new Flutter project.
+# Instagram clone 🔥🔥
+This is a cross-platform Instagram clone created for android, ios and web using flutter.
+Current version of this app works on Android, IOS and web browser.
 
-## Getting Started
+Note: If you are using browser you have to resize the browser to (around the size of mobile screen) for that to be working. The full screen version for web will be released in future. 
 
-This project is a starting point for a Flutter application.
+<img src="https://github.com/Aviral-Gupta101/instagram-clone-flutter/assets/97655036/1076c8a7-c9e6-4418-a8d5-cea8bec5bee7" width="400"/>
 
-A few resources to get you started if this is your first Flutter project:
+<img src="https://github.com/Aviral-Gupta101/instagram-clone-flutter/assets/97655036/425660cd-912a-4830-a34b-690afec09fa3" width="400"/>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tech Stack
+
+**Client:** Flutter 💁
+
+**Server:** Firebase 🔥
+
+
+
+
+## Features
+
+- Cross platform android, IOS and Web* (Web not fully supported yet)
+- Login and Logout using firebase 
+- User can add/see post in realtime
+- User can follow others
+- Uses FirebaseFirestore, FirebaseStorage and FirebaseAuth
+
+
+## Run Locally 😎
+
+Clone the project
+
+```bash
+  git clone https://github.com/Aviral-Gupta101/instagram-clone-flutter.git
+```
+
+Go to the project directory
+
+```bash
+  cd instagram-clone-flutter
+```
+
+Install dependencies
+
+```bash
+  flutter pub get
+```
+
+Run the app (Before running the app make sure the device is connected/selected)
+
+```bash
+  flutter run
+```
