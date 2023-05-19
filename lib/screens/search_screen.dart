@@ -76,10 +76,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       );
                     }
-
-                    return const Center(
-                      child: Text("error in search_screen"),
-                    );
                   },
                 );
               },

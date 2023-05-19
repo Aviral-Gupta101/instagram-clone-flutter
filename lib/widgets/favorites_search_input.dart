@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/models/user.dart';
+import 'package:instagram_clone/models/user.dart' as model;
 import 'package:instagram_clone/resources/firestore_methods.dart';
 import 'package:instagram_clone/widgets/follow_button.dart';
 
+import '../utils/colors.dart';
+
 class FavoritesSearchInpu extends StatefulWidget {
-  final User user;
+  final model.User user;
   const FavoritesSearchInpu(this.user, {super.key});
 
   @override
@@ -14,6 +17,7 @@ class FavoritesSearchInpu extends StatefulWidget {
 
 class _FavoritesSearchInpuState extends State<FavoritesSearchInpu> {
   final TextEditingController _controller = TextEditingController();
+
   bool _showUser = false;
 
   @override
@@ -100,38 +104,71 @@ class _FavoritesSearchInpuState extends State<FavoritesSearchInpu> {
 
                 return _showUser == false
                     ? Container()
-                    : Container(
-                        constraints:
-                            const BoxConstraints(minHeight: 0, maxHeight: 230),
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final data = snapshot.data!.docs[index].data();
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(data["photoUrl"]),
-                              ),
-                              title: Text(data["username"]),
-                              subtitle: Text(data["bio"]),
-                              trailing: SizedBox(
-                                height: 50,
-                                width: 80,
-                                child: FollowButton(
-                                  backgroundColor: Colors.blue,
-                                  borderColor: Colors.blue,
-                                  text: "Add",
-                                  textColor: Colors.white,
-                                  function: () {
-                                    FirestoreMethods().toogleFavorites(
-                                      widget.user.uid,
-                                      data["uid"],
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final data = snapshot.data!.docs[index].data();
+                          final bool currentUser =
+                              FirebaseAuth.instance.currentUser!.uid ==
+                                  data["uid"];
+                          bool isUserAdded =
+                              widget.user.favorites.contains(data["uid"]);
+
+                          return currentUser
+                              ? Container()
+                              : ListTile(
+                                  key: ValueKey(data["uid"]),
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(data["photoUrl"]),
+                                  ),
+                                  title: Text(data["username"]),
+                                  subtitle: Text(data["bio"]),
+                                  trailing: SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: isUserAdded
+                                        ? FollowButton(
+                                            backgroundColor:
+                                                mobileBackgroundColor,
+                                            borderColor: Colors.white,
+                                            text: "Remove",
+                                            textColor: Colors.white,
+                                            function: () async {
+                                              await FirestoreMethods()
+                                                  .toogleFavorites(
+                                                widget.user.uid,
+                                                data["uid"],
+                                              );
+                                              setState(() {
+                                                _showUser = false;
+                                                isUserAdded = !isUserAdded;
+                                                _controller.clear();
+                                              });
+                                            },
+                                          )
+                                        : FollowButton(
+                                            backgroundColor: Colors.blue,
+                                            borderColor: Colors.blue,
+                                            text: "Add",
+                                            textColor: Colors.white,
+                                            function: () {
+                                              FirestoreMethods()
+                                                  .toogleFavorites(
+                                                widget.user.uid,
+                                                data["uid"],
+                                              );
+                                              setState(() {
+                                                _showUser = false;
+                                                isUserAdded = !isUserAdded;
+                                                _controller.clear();
+                                              });
+                                            },
+                                          ),
+                                  ),
+                                );
+                        },
                       );
               },
             ),

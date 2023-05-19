@@ -2,12 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/favorites_search_input.dart';
+import 'package:instagram_clone/widgets/list_tile_favorate_user.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart';
 import '../providers/user_provider.dart';
-import '../resources/firestore_methods.dart';
-import '../widgets/follow_button.dart';
 
 class FavoratieScreen extends StatefulWidget {
   const FavoratieScreen({super.key});
@@ -60,6 +59,7 @@ class _FavoratieScreenState extends State<FavoratieScreen> {
                 StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection("users")
+                      .doc(user.uid)
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -76,34 +76,16 @@ class _FavoratieScreenState extends State<FavoratieScreen> {
 
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
+                        itemCount: (snapshot.data!.data()
+                                as Map<String, dynamic>)["favorites"]
+                            .length,
                         itemBuilder: (context, index) {
-                          final data = snapshot.data!.docs[index].data();
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(data["photoUrl"]),
-                              ),
-                              title: Text(data["username"]),
-                              subtitle: Text(data["bio"]),
-                              trailing: SizedBox(
-                                height: 50,
-                                width: 80,
-                                child: FollowButton(
-                                  backgroundColor: Colors.blue,
-                                  borderColor: Colors.blue,
-                                  text: "Add",
-                                  textColor: Colors.white,
-                                  function: () {
-                                    FirestoreMethods().toogleFavorites(
-                                      user.uid,
-                                      data["uid"],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
+                          return ListTileFavorateUser(
+                            key: ValueKey((snapshot.data!.data()
+                                as Map<String, dynamic>)["favorites"][index]),
+                            userUid: user.uid,
+                            guestUid: (snapshot.data!.data()
+                                as Map<String, dynamic>)["favorites"][index],
                           );
                         },
                       ),

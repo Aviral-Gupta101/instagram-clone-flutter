@@ -35,11 +35,13 @@ class AuthMethods {
   }) async {
     String res = "some error has occured";
     try {
+      if (file == null) {
+        return "Please select profile image";
+      }
       if (email.isNotEmpty &&
           password.isNotEmpty &&
           username.isNotEmpty &&
-          bio.isNotEmpty &&
-          file != null) {
+          bio.isNotEmpty) {
         // register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);

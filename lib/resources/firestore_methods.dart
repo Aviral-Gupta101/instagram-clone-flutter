@@ -150,11 +150,11 @@ class FirestoreMethods {
 
       if ((userSnap.data() as Map<String, dynamic>)["favorites"]
           .contains(guestUid)) {
-        userRef.update({
+        await userRef.update({
           "favorites": FieldValue.arrayRemove([guestUid]),
         });
       } else {
-        userRef.update({
+        await userRef.update({
           "favorites": FieldValue.arrayUnion([guestUid]),
         });
       }
