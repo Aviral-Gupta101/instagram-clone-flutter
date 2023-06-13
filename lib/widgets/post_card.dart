@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/responsive/global_variables.dart';
 import 'package:instagram_clone/screens/comments_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/widgets/like_animation.dart';
@@ -45,7 +46,11 @@ class _PostCardState extends State<PostCard> {
           )
         : Container(
             color: mobileBackgroundColor,
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: MediaQuery.of(context).size.width > webScreenSize
+                ? EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: MediaQuery.of(context).size.width / 3)
+                : const EdgeInsets.symmetric(vertical: 10),
             child: Column(
               children: [
                 // HEADER SECTION
